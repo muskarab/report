@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
-use App\Models\Korea;
 use App\Models\Pelaporan;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,12 +16,18 @@ class KoreaController extends Controller
      */
     public function index()
     {
+        $topik = [];
         $data = Pelaporan::join('users', 'user_id', '=', 'users.id')
         ->where('user_id', Auth::user()->id)
-        ->get();
+        ->get()->toArray();
+        $i = 0;
+        foreach ($data as $data) {
+            $topik[$i] = explode((","), $data['topik']);
+            $i++;
+        }
+        // dd($topik);
         // return $data->toArray();
         // return $data->toJson();
-        // dd($data->all());
         return view('korea.index');
     }
 
@@ -81,7 +85,8 @@ class KoreaController extends Controller
      */
     public function show($id)
     {
-        $data = Korea::findOrFail($id);
+        // dd($id);
+        $data = Pelaporan::findOrFail($id);
         $cabangs = Cabang::get();
         return view('korea.edit')->with([
             'data' => $data,
@@ -108,9 +113,10 @@ class KoreaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Korea::findOrFail($id);
+        $data = Pelaporan::findOrFail($id);
+        $data->cabang_id = $request->cabang;
+        $data->cair = $request->cair;
         $data->tempat = $request->tempat;
-        $data->cabang = $request->cabang;
         $data->rceo = $request->rceo;
         $data->am = $request->am;
         $data->acfm = $request->acfm;

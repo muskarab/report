@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Pelaporan extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'user_id'];
 
     public function cabang()
     {

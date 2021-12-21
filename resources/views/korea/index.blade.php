@@ -41,7 +41,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row mt-3">
+                <div class="row mt-3" id="form_cair_id" hidden="true">
                     <div class="col-md-12">
                         <label for="" class="col-form-label">Proyeksi cair bulan ini: Rp. <span id="tampil_cair"></span></label>
                     </div>
@@ -75,6 +75,7 @@
     
     //Create
     function create() {
+         $('#form_cair_id').removeAttr("hidden");
         var cair = $("#cair").val();
         // console.log(cair);
         $("#tampil_cair").html(cair);
@@ -113,52 +114,53 @@
         checkInput();
         console.log(topik);
         console.log(pembahasan);
-        // $.ajax({
-        //     type: "get",
-        //     url: "{{ url('korea/store') }}",
-        //     data: "cair=" + cair +
-        //     "&tempat=" + tempat +
-        //     "&cabang=" + cabang + 
-        //     "&rceo=" + rceo +
-        //     "&am=" + am +
-        //     "&acfm=" + acfm +
-        //     "&bm=" + bm +
-        //     "&crbmcbs=" + crbmcbs +
-        //     "&lainlain=" + lainlain +
-        //     "&topik=" + topik +
-        //     "&pembahasan=" + pembahasan,
-        //     success:function (data) {
-        //         $(".btn-close").click();
-        //         read()
-        //     }
-        // });
+        $.ajax({
+            type: "get",
+            url: "{{ url('korea/store') }}",
+            data: "cair=" + cair +
+            "&tempat=" + tempat +
+            "&cabang=" + cabang + 
+            "&rceo=" + rceo +
+            "&am=" + am +
+            "&acfm=" + acfm +
+            "&bm=" + bm +
+            "&crbmcbs=" + crbmcbs +
+            "&lainlain=" + lainlain +
+            "&topik=" + topik +
+            "&pembahasan=" + pembahasan,
+            success:function (data) {
+                $(".btn-close").click();
+                read()
+            }
+        });
     }
 
     //Show
     function show(id) {
+        $('#form_cair_id').attr("hidden", true);
         $.get("{{ url('korea/show') }}/" + id, {}, function(data, status){
             $("#titlemodal").html('Edit Product');
             $("#page").html(data);
             $("#addreportkorea").modal('show');
-            if (rceo) {
-                showfieldRCEO();
-            }if (am) {
-                showfieldAM();
-            }if (acfm) {
-                showfieldACFM();
-            }if (bm) {
-                showfieldBM();
-            }if (crbmcbs) {
-                showfieldCRBMCBS();
-            }if (lainlain) {
-                showfieldlainlain();
-            }
+            // if (rceo) {
+            //     showfieldRCEO();
+            // }if (am) {
+            //     showfieldAM();
+            // }if (acfm) {
+            //     showfieldACFM();
+            // }if (bm) {
+            //     showfieldBM();
+            // }if (crbmcbs) {
+            //     showfieldCRBMCBS();
+            // }if (lainlain) {
+            //     showfieldlainlain();
+            // }
         });
     }
 
     //Update
     function update(id) {
-        var cair = $("#cair").val();
+        var cair = $("#cair_modal").val();
         var tempat = $("#tempat").val();
         var cabang = $("#cabang").val();
         var rceo = $("#rceo").val();
@@ -167,19 +169,31 @@
         var bm = $("#bm").val();
         var crbmcbs = $("#crbmcbs").val();
         var lainlain = $("#lainlain").val();
-        var topik = $("#topik").val();
-        var pembahasan = $("#pembahasan").val();
+        var topik = $("#topik0").val();
+        var pembahasan = $("#pembahasan0").val();
+        console.log(cair);
+        console.log(tempat);
+        console.log(cabang);
+        console.log(rceo);
+        console.log(am);
+        console.log(acfm);
+        console.log(bm);
+        console.log(crbmcbs);
+        console.log(lainlain);
+        console.log(topik);
+        console.log(pembahasan);
         $.ajax({
             type: "get",
             url: "{{ url('korea/update') }}/" + id,
-            data: "tempat=" + tempat +
+            data: "cair=" + cair +
+            "&tempat=" + tempat +
             "&cabang=" + cabang + 
             "&rceo=" + rceo +
             "&am=" + am +
             "&acfm=" + acfm +
             "&bm=" + bm +
             "&crbmcbs=" + crbmcbs +
-            "&lainlain=" + lainlain +
+            "&lain=" + lainlain +
             "&topik=" + topik +
             "&pembahasan=" + pembahasan,
             success:function (data) {

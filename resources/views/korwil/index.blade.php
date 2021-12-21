@@ -133,6 +133,7 @@
     //Show
     function show(id) {
         $.get("{{ url('korwil/show') }}/" + id, {}, function(data, status){
+            console.log(id);
             $("#titlemodal").html('Edit Product');
             $("#page").html(data);
             $("#addreportkorwil").modal('show');
@@ -187,17 +188,18 @@
 
     //Delete
     function destroy(id) {
-        $.ajax({
-            type: "get",
-            url: "{{ url('korwil/destroy') }}/" + id,
-            data: "name=" + name,
-            success:function (data) {
-                if (confirm('Are you sure to delete this record ?')) {
-                    $(".btn-close").click();
-                    read()
-                }
-            }
-        });
+        console.log(id);
+        // $.ajax({
+        //     type: "get",
+        //     url: "{{ url('korwil/destroy') }}/" + id,
+        //     data: "name=" + name,
+        //     success:function (data) {
+        //         if (confirm('Are you sure to delete this record ?')) {
+        //             $(".btn-close").click();
+        //             read()
+        //         }
+        //     }
+        // });
     }
     var topik_count = 1;
     function new_topik() {
