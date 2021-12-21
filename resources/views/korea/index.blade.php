@@ -4,6 +4,9 @@
     <div class="row">
         <div class="card text-black bg-light mb-3">
             <div class="card-body">
+                <div class="alert alert-danger" role="alert" id="alert" style="display:none">
+                    <li>Proyeksi cair bulan ini harap diisi</li>
+                </div>
                 <h5 class="card-title text-center">Activity Report Korea</h5>
                 <div class="row mt-3">
                     <div class="col-md-4">
@@ -63,8 +66,9 @@
 <script>
     $(document).ready(function() {
         read()
+        checkInput()
     });
-
+    
     //Read
     function read() {
         document.getElementById("cair").value = "";
@@ -75,15 +79,22 @@
     
     //Create
     function create() {
+        checkInput()
          $('#form_cair_id').removeAttr("hidden");
         var cair = $("#cair").val();
         // console.log(cair);
         $("#tampil_cair").html(cair);
-        $.get("{{ url('korea/create') }}", {}, function(data, status){
-            $("#titlemodal").html('Create Report Korea');
-            $("#page").html(data);
-            $("#addreportkorea").modal('show');
-        });
+        // console.log(cair);
+        if (cair != "") {
+            $('#alert').hide()
+            $.get("{{ url('korea/create') }}", {}, function(data, status){
+                $("#titlemodal").html('Create Report Korea');
+                $("#page").html(data);
+                $("#addreportkorea").modal('show');
+            });
+        }else{
+            $('#alert').show();
+        }
     }
 
     //Store
@@ -169,17 +180,21 @@
         var bm = $("#bm").val();
         var crbmcbs = $("#crbmcbs").val();
         var lainlain = $("#lainlain").val();
-        var topik = $("#topik0").val();
-        var pembahasan = $("#pembahasan0").val();
-        console.log(cair);
-        console.log(tempat);
-        console.log(cabang);
-        console.log(rceo);
-        console.log(am);
-        console.log(acfm);
-        console.log(bm);
-        console.log(crbmcbs);
-        console.log(lainlain);
+        var pembahasan = [];
+        var topik = [];
+        for (let i = 0; i < count_new_topik_update; i++) {
+            topik[i] = $("#topik" + [i]).val();
+            pembahasan[i] = $("#pembahasan"+ [i]).val();
+        }
+        // console.log(cair);
+        // console.log(tempat);
+        // console.log(cabang);
+        // console.log(rceo);
+        // console.log(am);
+        // console.log(acfm);
+        // console.log(bm);
+        // console.log(crbmcbs);
+        // console.log(lainlain);
         console.log(topik);
         console.log(pembahasan);
         $.ajax({
@@ -202,6 +217,24 @@
             }
         });
     }
+    var count_new_topik_update = 0;
+    function show_topik_pembahasan() {
+        $('#tampil_topik_pembahasan').removeAttr("hidden");
+        $('#btn_tampil_topik_pembahasan').attr("hidden", true);
+        count_new_topik_update = parseInt($('#count_topiks').val());
+    }
+    function get_new_topik_update() {
+        console.log(count_new_topik_update);
+        var div1 = document.createElement('div');
+        div1.id = topik_count;
+        var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik'+count_new_topik_update+'" name="topik'+count_new_topik_update+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
+        var pembahasan = '<div class="mb-3"><label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label><textarea class="form-control" id="pembahasan'+count_new_topik_update+'" name="pembahasan2'+count_new_topik_update+'" rows="3"></textarea></div>'
+        var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik(' + count_new_topik_update +')">Hapus</button></div>';
+        count_new_topik_update++;
+        div1.innerHTML = topik + pembahasan + delLink;
+        document.getElementById('new_topik').appendChild(div1);
+        // console.log(count_new_topik_update);
+    }
 
     //Delete
     function destroy(id) {
@@ -220,6 +253,7 @@
     var topik_count = 0;
     function new_topik() {
         topik_count++;
+        // console.log(topik_count);
         var div1 = document.createElement('div');
         div1.id = topik_count;
         var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik'+topik_count+'" name="topik'+topik_count+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
@@ -227,7 +261,7 @@
         var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik(' + topik_count +')">Hapus</button></div>';
         div1.innerHTML = topik + pembahasan + delLink;
         document.getElementById('new_topik').appendChild(div1);
-        if (topik_count >= 2) {
+        if (topik_count >= 1) {
             $('#topik_min').hide();
         }else{
             $('#topik_min').show();
@@ -235,7 +269,7 @@
     }
     function delet_topik(id) {
         topik_count--;
-        if (topik_count >= 2) {
+        if (topik_count >= 1) {
             $('#topik_min').hide();
         }else{
             $('#topik_min').show();
@@ -246,7 +280,7 @@
         return topik_count;
     }
     function checkInput() {
-        topik_count = 1;
+        topik_count = 0;
     }
     function showfieldRCEO() {
     var field_rceo = document.getElementById("rceo");

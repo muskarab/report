@@ -87,39 +87,58 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col md-6">
-            <label for="" class="col-form-label">Topik Pembahasan</label>
+    <button class="btn btn-outline-dark" id="btn_tampil_topik_pembahasan" onclick="show_topik_pembahasan()">
+        Tampil Topik dan Pembahasan
+    </button>
+    <div id="tampil_topik_pembahasan" hidden>
+        <div class="row mt-3">
+            <div class="col md-6">
+                <label for="" class="col-form-label">Topik Pembahasan</label>
+            </div>
+            <div class="col md-6">
+                <button type="button" class="btn btn-outline-dark btn-sm" onclick="get_new_topik_update()">Tambah</button>
+            </div>
         </div>
-        <div class="col md-6">
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="new_topik()">Tambah</button>
-        </div>
-    </div>
-    <small id="topik_min" class="text_info form-text text-danger">
-        *Harus diisi minimal 2 Topik
-    </small>
-    <div id="new_topik">
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="inputGroupSelect01">Topik</label>
-            <select class="form-select" id="topik0" name="topik0">
-                <option value="{{ $data->topik }}" selected>(selected){{ $data->topik }}</option>
-                <option value="Pemenuhan SF">Pemenuhan SF</option>
-                <option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option>
-                <option value="Proses SLA">Proses SLA</option>
-                <option value="Strategy">Strategy</option>
-                <option value="Root cause">Root cause</option>
-                <option value="Evaluasi Kerja">Evaluasi Kerja</option>
-                <option value="Support yang dibutuhkan">Support yang dibutuhkan</option>
-                <option value="Activity SF">Activity SF</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label>
-            <textarea class="form-control" id="pembahasan0" name="pembahasan0" rows="3">{{ $data->pembahasan }}</textarea>
+        <small id="topik_min" class="text_info form-text text-danger">
+            *Harus diisi minimal 2 Topik
+        </small>
+        @php
+            $topiks = explode((","), $data->topik);
+            $pembahasans = explode((","), $data->pembahasan);
+            // print_r($pembahasans);
+            // echo (count($topiks));
+            $count_topiks = count($topiks);
+            $i = 0;
+        @endphp
+            <input type="text" id="count_topiks" value="{{ $count_topiks }}" hidden>
+        <div id="new_topik">
+        @foreach ($topiks as $topik)
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Topik</label>
+                <select class="form-select" id="topik{{ $i }}" name="topik{{ $i }}">
+                    <option value="{{ $topik }}" selected>(selected){{ $topik }}</option>
+                    <option value="Pemenuhan SF">Pemenuhan SF</option>
+                    <option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option>
+                    <option value="Proses SLA">Proses SLA</option>
+                    <option value="Strategy">Strategy</option>
+                    <option value="Root cause">Root cause</option>
+                    <option value="Evaluasi Kerja">Evaluasi Kerja</option>
+                    <option value="Support yang dibutuhkan">Support yang dibutuhkan</option>
+                    <option value="Activity SF">Activity SF</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label>
+                <textarea class="form-control" id="pembahasan{{ $i }}" name="pembahasan{{ $i }}" rows="3">{{ $pembahasans[$i] }}</textarea>
+            </div>
+        @php
+            $i++;
+        @endphp
+        @endforeach
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Back</button>
-        <button class="btn btn-outline-primary" onclick="update({{ $data->id }})">Save</button>
+        <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Save</button>
     </div>
 </div>

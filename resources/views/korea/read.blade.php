@@ -27,18 +27,24 @@
             {{ $item->lain }}
         </td>
         @php
-            $topiks = explode((","), $item['topik']);
-            // print_r($topiks);
+            $topiks = explode((","), $item->topik);
+            $pembahasans = explode((","), $item->pembahasan);
+            // print_r($pembahasans);
         @endphp
         <td>
             @foreach ($topiks as $topik)
-                @php
+                {{-- @php
                     echo ($topik);
-                @endphp
+                @endphp --}}
+                <p>{{ $topik }}</p>
             @endforeach
         </td>
         {{-- <td>{{ $item->topik }}</td> --}}
-        <td>{{ $item->pembahasan }}</td>
+        <td>
+            @foreach ($pembahasans as $pembahasan)
+                <p>{{ $pembahasan }}</p>
+            @endforeach
+        </td>
         <td>
             <button class="btn btn-outline-warning btn-sm" onclick="show({{ $item->id }})">Edit</button>
             <button class="btn btn-outline-danger btn-sm" onclick="destroy({{ $item->id }})">Delete</button>
