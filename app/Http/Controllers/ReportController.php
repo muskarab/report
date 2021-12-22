@@ -7,7 +7,7 @@ use App\Models\Pelaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class KorwilController extends Controller
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +16,26 @@ class KorwilController extends Controller
      */
     public function index()
     {
-        return view('korwil.index');
+        // $topik = [];
+        // $data = Pelaporan::join('users', 'user_id', '=', 'users.id')
+        // ->where('user_id', Auth::user()->id)
+        // ->get()->toArray();
+        // $i = 0;
+        // foreach ($data as $data) {
+        //     $topik[$i] = explode((","), $data['topik']);
+        //     $i++;
+        // }
+        // dd($topik);
+        // return $data->toArray();
+        // return $data->toJson();
+        return view('report.index');
     }
 
     public function read()
     {
         $data = Pelaporan::where('user_id', Auth::user()->id)->get();
         // dd($data);
-        return view('korwil.read', compact('data'))->with('i');
+        return view('report.read', compact('data'))->with('i');
     }
 
     /**
@@ -34,7 +46,7 @@ class KorwilController extends Controller
     public function create()
     {
         $cabangs = Cabang::get();
-        return view('korwil.create')->with([
+        return view('report.create')->with([
             'cabangs' => $cabangs
         ]);
     }
@@ -47,6 +59,12 @@ class KorwilController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'tempat' => 'required',
+        //     'topik' => 'required',
+        //     'pembahasan' => 'required'
+        // ]);
+
         $data['cair'] = $request->cair;
         $data['tempat'] = $request->tempat;
         $data['user_id'] = Auth::user()->id;
@@ -61,6 +79,10 @@ class KorwilController extends Controller
         $data['pembahasan'] = $request->pembahasan;
         $data['created_at'] = now();
         Pelaporan::insert($data);
+        // if ($validator->passes()) {
+        //     return response()->json(['success' => 'Added new records.']);
+        // }
+        // return response()->json(['error' => $validator->errors()->all()]);
     }
 
     /**
@@ -71,9 +93,10 @@ class KorwilController extends Controller
      */
     public function show($id)
     {
+        // dd($id);
         $data = Pelaporan::findOrFail($id);
         $cabangs = Cabang::get();
-        return view('korwil.edit', compact('data', 'cabangs'));
+        return view('report.edit', compact('data', 'cabangs'));
     }
 
     /**
@@ -84,7 +107,6 @@ class KorwilController extends Controller
      */
     public function edit($id)
     {
-        
     }
 
     /**

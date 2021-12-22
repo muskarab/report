@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KoreaController;
 use App\Http\Controllers\KorwilController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,24 +28,24 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['cek_login:admin']], function () {
         Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     });
-    Route::group(['middleware' => ['cek_login:korea']], function () {
-        Route::get('/korea', [KoreaController::class, 'index'])->name('korea');
-        Route::get('/korea/read', [KoreaController::class, 'read']);
-        Route::get('/korea/create', [KoreaController::class, 'create']);
-        Route::get('/korea/store', [KoreaController::class, 'store']);
-        Route::get('/korea/show/{id}', [KoreaController::class, 'show']);
-        Route::get('/korea/update/{id}', [KoreaController::class, 'update']);
-        Route::get('/korea/destroy/{id}', [KoreaController::class, 'destroy']);
-    });
-    Route::group(['middleware' => ['cek_login:korwil']], function () {
-        Route::get('/korwil', [KorwilController::class, 'index'])->name('korwil');
-        Route::get('/korwil/read', [KorwilController::class, 'read']);
-        Route::get('/korwil/create', [KorwilController::class, 'create']);
-        Route::get('/korwil/store', [KorwilController::class, 'store']);
-        Route::get('/korwil/show/{id}', [KorwilController::class, 'show']);
-        Route::get('/korwil/update/{id}', [KorwilController::class, 'update']);
-        Route::get('/korwil/destroy/{id}', [KorwilController::class, 'destroy']);
-    });
+    // Route::group(['middleware' => ['cek_login:korea']], function () {
+        Route::get('/report', [ReportController::class, 'index'])->name('report');
+        Route::get('/report/read', [ReportController::class, 'read']);
+        Route::get('/report/create', [ReportController::class, 'create']);
+        Route::get('/report/store', [ReportController::class, 'store']);
+        Route::get('/report/show/{id}', [ReportController::class, 'show']);
+        Route::get('/report/update/{id}', [ReportController::class, 'update']);
+        Route::get('/report/destroy/{id}', [ReportController::class, 'destroy']);
+    // });
+    // Route::group(['middleware' => ['cek_login:korwil']], function () {
+    //     Route::get('/korwil', [KoreaController::class, 'index'])->name('korwil');
+    //     Route::get('/korwil/read', [KoreaController::class, 'read']);
+    //     Route::get('/korwil/create', [KoreaController::class, 'create']);
+    //     Route::get('/korwil/store', [KoreaController::class, 'store']);
+    //     Route::get('/korwil/show/{id}', [KoreaController::class, 'show']);
+    //     Route::get('/korwil/update/{id}', [KoreaController::class, 'update']);
+    //     Route::get('/korwil/destroy/{id}', [KoreaController::class, 'destroy']);
+    // });
 });
 Auth::routes();
 

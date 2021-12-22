@@ -59,6 +59,12 @@ class KoreaController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'tempat' => 'required',
+        //     'topik' => 'required',
+        //     'pembahasan' => 'required'
+        // ]);
+
         $data['cair'] = $request->cair;
         $data['tempat'] = $request->tempat;
         $data['user_id'] = Auth::user()->id;
@@ -73,6 +79,10 @@ class KoreaController extends Controller
         $data['pembahasan'] = $request->pembahasan;
         $data['created_at'] = now();
         Pelaporan::insert($data);
+        // if ($validator->passes()) {
+        //     return response()->json(['success' => 'Added new records.']);
+        // }
+        // return response()->json(['error' => $validator->errors()->all()]);
     }
 
     /**

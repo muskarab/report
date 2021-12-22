@@ -7,7 +7,7 @@
                 <div class="alert alert-danger" role="alert" id="alert" style="display:none">
                     <li>Proyeksi cair bulan ini harap diisi</li>
                 </div>
-                <h5 class="card-title text-center">Activity Report Korea</h5>
+                <h5 class="card-title text-center">Activity Report {{ Str::upper(Auth::user()->role->name)  }}</h5>
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <label for="" class="col-form-label">Proyeksi cair bulan ini</label>
@@ -33,7 +33,7 @@
 
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="modal fade" id="addreportkorea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addreport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
             <div class="modal-header">
@@ -65,7 +65,7 @@
     //Read
     function read() {
         document.getElementById("cair").value = "";
-        $.get("{{ url('korea/read') }}", {}, function(data, status){
+        $.get("{{ url('report/read') }}", {}, function(data, status){
             $("#read").html(data);
         });
     }
@@ -78,15 +78,15 @@
         // console.log(cair);
         $("#tampil_cair").html(cair);
         // console.log(cair);
-        if (cair != "") {
-            $('#alert').hide()
-            $.get("{{ url('korea/create') }}", {}, function(data, status){
-                $("#titlemodal").html('Report Korea');
-                $("#page").html(data);
-                $("#addreportkorea").modal('show');
-            });
+        if (cair == "") {
+            alert("Proyeksi cair bulan ini harus diisi");
+            return false;
         }else{
-            $('#alert').show();
+            $.get("{{ url('report/create') }}", {}, function(data, status){
+                $("#titlemodal").html('Add Report');
+                $("#page").html(data);
+                $("#addreport").modal('show');
+            });
         }
     }
 
@@ -115,113 +115,140 @@
         }
         // return topik;
         // return pembahasan;
-        checkInput();
+        console.log(topik_count);
         console.log(topik);
         console.log(pembahasan);
-        $.ajax({
-            type: "get",
-            url: "{{ url('korea/store') }}",
-            data: "cair=" + cair +
-            "&tempat=" + tempat +
-            "&cabang=" + cabang + 
-            "&rceo=" + rceo +
-            "&am=" + am +
-            "&acfm=" + acfm +
-            "&bm=" + bm +
-            "&crbmcbs=" + crbmcbs +
-            "&lainlain=" + lainlain +
-            "&topik=" + topik +
-            "&pembahasan=" + pembahasan,
-            success:function (data) {
-                $(".btn-close").click();
-                read()
-            }
-        });
+        if (tempat == "") {
+            alert("Tempat harus diisi");
+            return false;
+        }else if (rceo == "" && am == "" && acfm == "" && bm == "" && crbmcbs == "" && lainlain == ""){
+            alert("Salah satu Pejabatan harus diisi");
+            return false;
+        }else if (topik_count == 0){
+            alert("Topik dan Pembahasan harus diisi minimal 2");
+            return false;
+        }else if (topik == "" ) {
+            alert("Topik harus diisi");
+            return false;
+        }
+        else if (pembahasan == "") {
+            alert("Pembahasan harus diisi");
+            return false;
+        }else{
+            $.ajax({
+                type: "get",
+                url: "{{ url('report/store') }}",
+                data: "cair=" + cair +
+                "&tempat=" + tempat +
+                "&cabang=" + cabang + 
+                "&rceo=" + rceo +
+                "&am=" + am +
+                "&acfm=" + acfm +
+                "&bm=" + bm +
+                "&crbmcbs=" + crbmcbs +
+                "&lainlain=" + lainlain +
+                "&topik=" + topik +
+                "&pembahasan=" + pembahasan,
+                success:function (data) {
+                    $(".btn-close").click();
+                    read()
+                }
+            });
+        }
+        checkInput();
     }
 
     //Show
     function show(id) {
+        $buka_topik = false;
+        checkInput();
         $('#form_cair_id').attr("hidden", true);
-        $.get("{{ url('korea/show') }}/" + id, {}, function(data, status){
-            $("#titlemodal").html('Edit Report Korea');
+        $.get("{{ url('report/show') }}/" + id, {}, function(data, status){
+            $("#titlemodal").html('Edit Report');
             $("#page").html(data);
-            $("#addreportkorea").modal('show');
+            $("#addreport").modal('show');
         });
     }
 
     //Update
+    var $buka_topik = false;
     function update(id) {
-        show_topik_pembahasan();
-        var cair = $("#cair_modal").val();
-        var tempat = $("#tempat").val();
-        var cabang = $("#cabang").val();
-        var rceo = $("#rceo").val();
-        var am = $("#am").val();
-        var acfm = $("#acfm").val();
-        var bm = $("#bm").val();
-        var crbmcbs = $("#crbmcbs").val();
-        var lainlain = $("#lainlain").val();
-        var pembahasan = [];
-        var topik = [];
-        for (let i = 0; i < count_new_topik_update; i++) {
-            topik[i] = $("#topik" + [i]).val();
-            pembahasan[i] = $("#pembahasan"+ [i]).val();
+        if ($buka_topik == true) {
+            // show_topik_pembahasan();
+            var cair = $("#cair_modal").val();
+            var tempat = $("#tempat").val();
+            var cabang = $("#cabang").val();
+            var rceo = $("#rceo").val();
+            var am = $("#am").val();
+            var acfm = $("#acfm").val();
+            var bm = $("#bm").val();
+            var crbmcbs = $("#crbmcbs").val();
+            var lainlain = $("#lainlain").val();
+            var pembahasan = [];
+            var topik = [];
+            for (let i = 0; i < count_new_topik_update; i++) {
+                topik[i] = $("#topik_update" + [i]).val();
+                pembahasan[i] = $("#pembahasan_update"+ [i]).val();
+            }
+            console.log(count_new_topik_update);
+            console.log(topik);
+            console.log(pembahasan);
+            if (tempat == "") {
+            alert("Tempat harus diisi");
+            return false;
+            }else if (rceo == "" && am == "" && acfm == "" && bm == "" && crbmcbs == "" && lainlain == ""){
+                alert("Salah satu Pejabatan harus diisi");
+                return false;
+            }else if (count_new_topik_update == 1){
+                alert("Topik dan Pembahasan harus diisi minimal 2");
+                return false;
+            }else if (topik == "" ) {
+                alert("Topik harus diisi");
+                return false;
+            }
+            else if (pembahasan == "") {
+                alert("Pembahasan harus diisi");
+                return false;
+            }else{
+                $.ajax({
+                    type: "get",
+                    url: "{{ url('report/update') }}/" + id,
+                    data: "cair=" + cair +
+                    "&tempat=" + tempat +
+                    "&cabang=" + cabang + 
+                    "&rceo=" + rceo +
+                    "&am=" + am +
+                    "&acfm=" + acfm +
+                    "&bm=" + bm +
+                    "&crbmcbs=" + crbmcbs +
+                    "&lain=" + lainlain +
+                    "&topik=" + topik +
+                    "&pembahasan=" + pembahasan,
+                    success:function (data) {
+                        $(".btn-close").click();
+                        read()
+                    }
+                });
+            }
+            $buka_topik = false;
+        }else{
+            show_topik_pembahasan();
         }
-        // console.log(cair);
-        // console.log(tempat);
-        // console.log(cabang);
-        // console.log(rceo);
-        // console.log(am);
-        // console.log(acfm);
-        // console.log(bm);
-        // console.log(crbmcbs);
-        // console.log(lainlain);
-        console.log(topik);
-        console.log(pembahasan);
-        $.ajax({
-            // type: "get",
-            // url: "{{ url('korea/update') }}/" + id,
-            // data: "cair=" + cair +
-            // "&tempat=" + tempat +
-            // "&cabang=" + cabang + 
-            // "&rceo=" + rceo +
-            // "&am=" + am +
-            // "&acfm=" + acfm +
-            // "&bm=" + bm +
-            // "&crbmcbs=" + crbmcbs +
-            // "&lain=" + lainlain +
-            // "&topik=" + topik +
-            // "&pembahasan=" + pembahasan,
-            // success:function (data) {
-            //     $(".btn-close").click();
-            //     read()
-            // }
-        });
     }
+
     var count_new_topik_update = 0;
     function show_topik_pembahasan() {
+        $buka_topik = true;
         $('#tampil_topik_pembahasan').removeAttr("hidden");
         $('#btn_tampil_topik_pembahasan').attr("hidden", true);
         count_new_topik_update = parseInt($('#count_topiks').val());
-    }
-    function get_new_topik_update() {
-        console.log(count_new_topik_update);
-        var div1 = document.createElement('div');
-        div1.id = topik_count;
-        var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik'+count_new_topik_update+'" name="topik'+count_new_topik_update+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
-        var pembahasan = '<div class="mb-3"><label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label><textarea class="form-control" id="pembahasan'+count_new_topik_update+'" name="pembahasan2'+count_new_topik_update+'" rows="3"></textarea></div>'
-        var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik(' + count_new_topik_update +')">Hapus</button></div>';
-        count_new_topik_update++;
-        div1.innerHTML = topik + pembahasan + delLink;
-        document.getElementById('new_topik').appendChild(div1);
-        // console.log(count_new_topik_update);
     }
 
     //Delete
     function destroy(id) {
         $.ajax({
             type: "get",
-            url: "{{ url('korea/destroy') }}/" + id,
+            url: "{{ url('report/destroy') }}/" + id,
             data: "id=" + id,
             success:function (data) {
                 if (confirm('Are you sure to delete this record ?')) {
@@ -231,6 +258,7 @@
             }
         });
     }
+
     var topik_count = 0;
     function new_topik() {
         topik_count++;
@@ -248,6 +276,20 @@
             $('#topik_min').show();
         }
     }
+
+    function add_new_topik_update() {
+        console.log(count_new_topik_update);
+        var div = document.createElement('div');
+        div.id = "update_topik" + count_new_topik_update;
+        var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik_update'+count_new_topik_update+'" name="topik'+count_new_topik_update+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
+        var pembahasan = '<div class="mb-3"><label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label><textarea class="form-control" id="pembahasan_update'+count_new_topik_update+'" name="pembahasan2'+count_new_topik_update+'" rows="3"></textarea></div>'
+        var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik_update(' + count_new_topik_update +')">Hapus</button></div>';
+        div.innerHTML = topik + pembahasan + delLink;
+        document.getElementById('update_topik0').appendChild(div);
+        count_new_topik_update++;
+        // console.log(count_new_topik_update);
+    }
+
     function delet_topik(id) {
         topik_count--;
         if (topik_count >= 1) {
@@ -260,7 +302,15 @@
         parent_topik.removeChild(del);
         return topik_count;
     }
+
+    function delet_topik_update(id) {
+        count_new_topik_update--;
+        $('#update_topik' + id).remove();
+        return count_new_topik_update;
+    }
+
     function checkInput() {
+        count_new_topik_update = 0;
         topik_count = 0;
     }
 </script>

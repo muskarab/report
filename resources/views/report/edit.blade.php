@@ -33,7 +33,7 @@
                 Nama Pejabat
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-rceo" onclick="showfieldRCEO()">RCEO</button>
+                <span class="input-group-text" id="basic-addon2">RCEO</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="rceo" name="rceo" value="{{ $data->rceo }}">
             </div>
         </div>
@@ -42,7 +42,7 @@
                 Nama Pejabat
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-addon1" onclick="showfieldAM()">AM</button>
+                <span class="input-group-text" id="basic-addon2">AM</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="am" name="am" value="{{ $data->am }}">
             </div>
         </div>
@@ -53,7 +53,7 @@
                 Nama Pejabat
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-addon1" onclick="showfieldACFM()">ACFM</button>
+                <span class="input-group-text" id="basic-addon2">ACFM</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="acfm" name="acfm" value="{{ $data->acfm }}">
             </div>
         </div>
@@ -62,7 +62,7 @@
                 Nama Pejabat
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-addon1" onclick="showfieldBM()">BM</button>
+                <span class="input-group-text" id="basic-addon2">BM</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="bm" name="bm" value="{{ $data->bm }}">
             </div>
         </div>
@@ -73,7 +73,7 @@
                 Nama Pejabat
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-addon1" onclick="showfieldCRBMCBS()">CBRM/CBS</button>
+                <span class="input-group-text" id="basic-addon2">CBRM/CBS</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="crbmcbs" name="crbmcbs" value="{{ $data->crbmcbs }}">
             </div>
         </div>
@@ -82,7 +82,7 @@
                 Jabatan lain yang ditemui
             </small>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-dark" type="button" id="button-addon1" onclick="showfieldlainlain()">Lain</button>
+                <span class="input-group-text" id="basic-addon2">Lain</span>
                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="lainlain" name="lainlain" value="{{ $data->lain }}">
             </div>
         </div>
@@ -96,7 +96,7 @@
                 <label for="" class="col-form-label">Topik Pembahasan</label>
             </div>
             <div class="col md-6">
-                <button type="button" class="btn btn-outline-dark btn-sm" onclick="get_new_topik_update()">Tambah</button>
+                <button type="button" class="btn btn-outline-dark btn-sm" onclick="add_new_topik_update()">Tambah</button>
             </div>
         </div>
         {{-- <small id="topik_min" class="text_info form-text text-danger">
@@ -111,11 +111,11 @@
             $i = 0;
         @endphp
             <input type="text" id="count_topiks" value="{{ $count_topiks }}" hidden>
-        <div id="new_topik">
         @foreach ($topiks as $topik)
+        <div id="update_topik{{ $i }}">
             <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01">Topik</label>
-                <select class="form-select" id="topik{{ $i }}" name="topik{{ $i }}">
+                <select class="form-select" id="topik_update{{ $i }}" name="topik_update{{ $i }}">
                     <option value="{{ $topik }}" selected>(selected){{ $topik }}</option>
                     <option value="Pemenuhan SF">Pemenuhan SF</option>
                     <option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option>
@@ -129,13 +129,18 @@
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label>
-                <textarea class="form-control" id="pembahasan{{ $i }}" name="pembahasan{{ $i }}" rows="3">{{ $pembahasans[$i] }}</textarea>
+                <textarea class="form-control" id="pembahasan_update{{ $i }}" name="pembahasan_update{{ $i }}" rows="3">{{ $pembahasans[$i] }}</textarea>
+            </div>
+            <div class="mb-3">
+                <button class="btn-outline-danger btn-sm" type="button" onclick="delet_topik_update({{ $i }})">
+                    Hapus
+                </button>
             </div>
         @php
             $i++;
         @endphp
-        @endforeach
         </div>
+        @endforeach
     </div>
     <hr>
     <div class="modal-footer">

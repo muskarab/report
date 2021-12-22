@@ -38,16 +38,16 @@
                             <a class="nav-link" href="{{ route('admin') }}">{{ __('Admin') }}</a>
                         </li>
                         @endif
-                        @if (Auth::user()->role->name == 'korea')
+                        @if (Auth::user()->role->name == 'korea' || Auth::user()->role->name == 'korwil')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('korea') }}">{{ __('Korea') }}</a>
+                            <a class="nav-link" href="{{ route('report') }}">{{Auth::user()->role->name }}</a>
                         </li>
                         @endif
-                        @if (Auth::user()->role->name == 'korwil')
+                        {{-- @if (Auth::user()->role->name == 'korwil')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('korwil') }}">{{ __('Korwil') }}</a>
                         </li>
-                        @endif
+                        @endif --}}
                     </ul>
 
                     <!-- Right Side Of Navbar -->
