@@ -16,7 +16,7 @@ class AdminController extends Controller
     {
         $pelaporans = Pelaporan::get();
         // dd($pelaporans);
-        return view('admin.index', compact('pelaporans'));
+        return view('admin.index', compact('pelaporans'))->with('i');
     }
 
     /**

@@ -7,31 +7,57 @@
             <div class="card-body">
                 <table class="table">
                     <tr>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Cair</th>
                         <th>Tempat</th>
-                        <th>Branch</th>
+                        <th>Cabang</th>
                         <th>Pejabat</th>
                         <th>Topik</th>
                         <th>Pembahasan</th>
-                        <th>Tanggal</th>
                         <th>Action</th>
                     </tr>
                     @foreach ($pelaporans as $pelaporan)
                         <tr>
+                            <td>{{ ++$i }}</td>
                             <td>{{ $pelaporan->user->name }}</td>
                             <td>{{ $pelaporan->cair }}</td>
                             <td>{{ $pelaporan->tempat }}</td>
                             <td>{{ $pelaporan->cabang->nama }}</td>
-                            <td>{{ $pelaporan->rceo }}
-                                {{ $pelaporan->am }}
-                                {{ $pelaporan->acfm }}
-                                {{ $pelaporan->bm }}
-                                {{ $pelaporan->crbmcbs }}
-                                {{ $pelaporan->lain }}
+                            <td>@if ($pelaporan->rceo)
+                                {{ $pelaporan->rceo }} (RCEO)
+                                @endif
+                                @if ($pelaporan->am)
+                                , {{ $pelaporan->am }} (AM)
+                                @endif
+                                @if ($pelaporan->acfm)
+                                , {{ $pelaporan->acfm }} (ACFM)
+                                @endif
+                                @if ($pelaporan->bm)
+                                , {{ $pelaporan->bm }} (BM)
+                                @endif
+                                @if ($pelaporan->crbmcbs)
+                                , {{ $pelaporan->crbmcbs }} (CRBMCBS)
+                                @endif
+                                @if ($pelaporan->lain)
+                                , {{ $pelaporan->lain }} (Lain)
+                                @endif
                             </td>
-                            <td>{!! $pelaporan->topik !!}</td>
-                            <td>{!! $pelaporan->pembahasan !!}</td>
+                            @php
+                                $topiks = explode((","), $pelaporan->topik);
+                                $pembahasans = explode((","), $pelaporan->pembahasan);
+                                // print_r($pembahasans);
+                            @endphp
+                            <td>
+                                @foreach ($topiks as $topik)
+                                    <p>{{ $topik }}</p>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($pembahasans as $pembahasan)
+                                    <p>{{ $pembahasan }}</p>
+                                @endforeach
+                            </td>
                             <td>
                                 {{-- <button class="btn btn-outline-warning btn-sm" onclick="show({{ $item->id }})">Edit</button> --}}
                                 {{-- <button class="btn btn-outline-danger btn-sm" onclick="destroy({{ $item->id }})">Delete</button> --}}

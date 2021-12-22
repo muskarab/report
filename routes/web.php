@@ -30,7 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['cek_login:korea']], function () {
         Route::get('/korea', [KoreaController::class, 'index'])->name('korea');
         Route::get('/korea/read', [KoreaController::class, 'read']);
-        // Route::get('/korea/show', [KoreaController::class, 'show']);
         Route::get('/korea/create', [KoreaController::class, 'create']);
         Route::get('/korea/store', [KoreaController::class, 'store']);
         Route::get('/korea/show/{id}', [KoreaController::class, 'show']);

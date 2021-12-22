@@ -15,9 +15,6 @@
                     <div class="col-md-4">
                         <input type="number" class="form-control" id="cair" name="cair">
                     </div>
-                    {{-- <div>
-                        <p id="tampil_cair" name="tampil_cair"></p>
-                    </div> --}}
                     <div class="col-md-4">
                         <button class="btn btn-outline-dark" onclick="create()">Tambah</button>
                     </div>
@@ -52,10 +49,6 @@
                 <div id="page" class="p-2">
                 </div>
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> --}}
             </div>
         </div>
         </div>
@@ -88,7 +81,7 @@
         if (cair != "") {
             $('#alert').hide()
             $.get("{{ url('korea/create') }}", {}, function(data, status){
-                $("#titlemodal").html('Create Report Korea');
+                $("#titlemodal").html('Report Korea');
                 $("#page").html(data);
                 $("#addreportkorea").modal('show');
             });
@@ -150,27 +143,15 @@
     function show(id) {
         $('#form_cair_id').attr("hidden", true);
         $.get("{{ url('korea/show') }}/" + id, {}, function(data, status){
-            $("#titlemodal").html('Edit Product');
+            $("#titlemodal").html('Edit Report Korea');
             $("#page").html(data);
             $("#addreportkorea").modal('show');
-            // if (rceo) {
-            //     showfieldRCEO();
-            // }if (am) {
-            //     showfieldAM();
-            // }if (acfm) {
-            //     showfieldACFM();
-            // }if (bm) {
-            //     showfieldBM();
-            // }if (crbmcbs) {
-            //     showfieldCRBMCBS();
-            // }if (lainlain) {
-            //     showfieldlainlain();
-            // }
         });
     }
 
     //Update
     function update(id) {
+        show_topik_pembahasan();
         var cair = $("#cair_modal").val();
         var tempat = $("#tempat").val();
         var cabang = $("#cabang").val();
@@ -198,23 +179,23 @@
         console.log(topik);
         console.log(pembahasan);
         $.ajax({
-            type: "get",
-            url: "{{ url('korea/update') }}/" + id,
-            data: "cair=" + cair +
-            "&tempat=" + tempat +
-            "&cabang=" + cabang + 
-            "&rceo=" + rceo +
-            "&am=" + am +
-            "&acfm=" + acfm +
-            "&bm=" + bm +
-            "&crbmcbs=" + crbmcbs +
-            "&lain=" + lainlain +
-            "&topik=" + topik +
-            "&pembahasan=" + pembahasan,
-            success:function (data) {
-                $(".btn-close").click();
-                read()
-            }
+            // type: "get",
+            // url: "{{ url('korea/update') }}/" + id,
+            // data: "cair=" + cair +
+            // "&tempat=" + tempat +
+            // "&cabang=" + cabang + 
+            // "&rceo=" + rceo +
+            // "&am=" + am +
+            // "&acfm=" + acfm +
+            // "&bm=" + bm +
+            // "&crbmcbs=" + crbmcbs +
+            // "&lain=" + lainlain +
+            // "&topik=" + topik +
+            // "&pembahasan=" + pembahasan,
+            // success:function (data) {
+            //     $(".btn-close").click();
+            //     read()
+            // }
         });
     }
     var count_new_topik_update = 0;
@@ -281,72 +262,6 @@
     }
     function checkInput() {
         topik_count = 0;
-    }
-    function showfieldRCEO() {
-    var field_rceo = document.getElementById("rceo");
-        if (field_rceo.style.display === "none") {
-            field_rceo.style.display = "block";
-            // $('#rceo_label').show();
-        } else {
-            document.getElementById("rceo").value = "";
-            field_rceo.style.display = "none";
-            // $('#rceo_label').hide();
-        }
-    }
-    function showfieldAM() {
-        var field_am = document.getElementById("am");
-        if (field_am.style.display === "none") {
-            field_am.style.display = "block";
-            // $('#am_label').show();
-        } else {
-            document.getElementById("am").value = "";
-            field_am.style.display = "none";
-            // $('#am_label').hide();
-        }
-    }
-    function showfieldACFM() {
-        var field_acfm = document.getElementById("acfm");
-        if (field_acfm.style.display === "none") {
-            field_acfm.style.display = "block";
-            // $('#acfm_label').show();
-        } else {
-            document.getElementById("acfm").value = "";
-            field_acfm.style.display = "none";
-            // $('#acfm_label').hide();
-        }
-    }
-    function showfieldBM() {
-        var field_bm = document.getElementById("bm");
-        if (field_bm.style.display === "none") {
-            field_bm.style.display = "block";
-            // $('#bm_label').show();
-        } else {
-            document.getElementById("bm").value = "";
-            field_bm.style.display = "none";
-            // $('#bm_label').hide();
-        }
-    }
-    function showfieldCRBMCBS() {
-        var field_crbmcbs = document.getElementById("crbmcbs");
-        if (field_crbmcbs.style.display === "none") {
-            field_crbmcbs.style.display = "block";
-            // $('#crbmcbs_label').show();
-        } else {
-            document.getElementById("crbmcbs").value = "";
-            field_crbmcbs.style.display = "none";
-            // $('#crbmcbs_label').hide();
-        }
-    }
-    function showfieldlainlain() {
-        var field_lainlain = document.getElementById("lainlain");
-        if (field_lainlain.style.display === "none") {
-            field_lainlain.style.display = "block";
-            // $('#lainlain_label').show();
-        } else {
-            document.getElementById("lainlain").value = "";
-            field_lainlain.style.display = "none";
-            // $('#lainlain_label').hide();
-        }
     }
 </script>
 @endsection

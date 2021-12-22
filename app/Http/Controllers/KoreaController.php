@@ -16,15 +16,15 @@ class KoreaController extends Controller
      */
     public function index()
     {
-        $topik = [];
-        $data = Pelaporan::join('users', 'user_id', '=', 'users.id')
-        ->where('user_id', Auth::user()->id)
-        ->get()->toArray();
-        $i = 0;
-        foreach ($data as $data) {
-            $topik[$i] = explode((","), $data['topik']);
-            $i++;
-        }
+        // $topik = [];
+        // $data = Pelaporan::join('users', 'user_id', '=', 'users.id')
+        // ->where('user_id', Auth::user()->id)
+        // ->get()->toArray();
+        // $i = 0;
+        // foreach ($data as $data) {
+        //     $topik[$i] = explode((","), $data['topik']);
+        //     $i++;
+        // }
         // dd($topik);
         // return $data->toArray();
         // return $data->toJson();
@@ -35,9 +35,7 @@ class KoreaController extends Controller
     {
         $data = Pelaporan::where('user_id', Auth::user()->id)->get();
         // dd($data);
-        return view('korea.read')->with([
-            'data' => $data
-        ]);
+        return view('korea.read', compact('data'))->with('i');
     }
 
     /**
@@ -88,10 +86,7 @@ class KoreaController extends Controller
         // dd($id);
         $data = Pelaporan::findOrFail($id);
         $cabangs = Cabang::get();
-        return view('korea.edit')->with([
-            'data' => $data,
-            'cabangs' => $cabangs
-        ]);
+        return view('korea.edit', compact('data', 'cabangs'));
     }
 
     /**

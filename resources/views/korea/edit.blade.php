@@ -1,5 +1,5 @@
 <div class="p2">
-    <div class="row mt-3">
+    <div class="row">
         <div class="input-group md-6">
             <span class="input-group-text" id="basic-addon2">Proyeksi cair bulan ini: Rp. </span>
             <input type="number" class="form-control" placeholder="Tempat Pertemuan" aria-label="Recipient's username" aria-describedby="basic-addon2" id="cair_modal" name="cair_modal" value="{{ $data->cair }}">
@@ -99,9 +99,9 @@
                 <button type="button" class="btn btn-outline-dark btn-sm" onclick="get_new_topik_update()">Tambah</button>
             </div>
         </div>
-        <small id="topik_min" class="text_info form-text text-danger">
+        {{-- <small id="topik_min" class="text_info form-text text-danger">
             *Harus diisi minimal 2 Topik
-        </small>
+        </small> --}}
         @php
             $topiks = explode((","), $data->topik);
             $pembahasans = explode((","), $data->pembahasan);
@@ -137,6 +137,7 @@
         @endforeach
         </div>
     </div>
+    <hr>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Back</button>
         <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Save</button>

@@ -109,8 +109,9 @@
             <textarea class="form-control" id="pembahasan0" name="pembahasan0" rows="3"></textarea>
         </div>
     </div>
+    <hr>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Back</button>
-        <button class="btn btn-outline-primary" onclick="store()">Save</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
+        <button class="btn btn-outline-primary" onclick="store()">Simpan</button>
     </div>
 </div>

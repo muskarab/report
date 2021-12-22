@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
-use App\Models\Korwil;
 use App\Models\Pelaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +23,7 @@ class KorwilController extends Controller
     {
         $data = Pelaporan::where('user_id', Auth::user()->id)->get();
         // dd($data);
-        return view('korwil.read')->with([
-            'data' => $data
-        ]);
+        return view('korwil.read', compact('data'))->with('i');
     }
 
     /**
@@ -74,12 +71,9 @@ class KorwilController extends Controller
      */
     public function show($id)
     {
-        $data = Korwil::findOrFail($id);
+        $data = Pelaporan::findOrFail($id);
         $cabangs = Cabang::get();
-        return view('korwil.edit')->with([
-            'data' => $data,
-            'cabangs' => $cabangs
-        ]);
+        return view('korwil.edit', compact('data', 'cabangs'));
     }
 
     /**
@@ -102,9 +96,10 @@ class KorwilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Korwil::findOrFail($id);
+        $data = Pelaporan::findOrFail($id);
+        $data->cabang_id = $request->cabang;
+        $data->cair = $request->cair;
         $data->tempat = $request->tempat;
-        $data->cabang = $request->cabang;
         $data->rceo = $request->rceo;
         $data->am = $request->am;
         $data->acfm = $request->acfm;
@@ -124,7 +119,7 @@ class KorwilController extends Controller
      */
     public function destroy($id)
     {
-        $data = Korwil::findOrFail($id);
+        $data = Pelaporan::findOrFail($id);
         $data->delete();
     }
 }

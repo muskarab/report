@@ -1,30 +1,38 @@
 <table class="table">
 <tr>
+    <th>No</th>
     <th>Cair</th>
     <th>Tempat</th>
     <th>Cabang</th>
     <th>Pejabat</th>
-    {{-- <th>RCEO</th>
-    <th>AM</th>
-    <th>ACFM</th>
-    <th>BM</th>
-    <th>CBRM/CBS</th>
-    <th>Lain-lain</th> --}}
     <th>Topik</th>
     <th>Pembahasan</th>
     <th>Action</th>
 </tr>
 @foreach ($data as $item)
     <tr>
+        <td>{{ ++$i }}</td>
         <td>{{ $item->cair }}</td>
         <td>{{ $item->tempat }}</td>
         <td>{{ $item->cabang->nama }}</td>
-        <td>{{ $item->rceo }}
-            {{ $item->am }}
-            {{ $item->acfm }}
-            {{ $item->bm }}
-            {{ $item->crbmcbs }}
-            {{ $item->lain }}
+        <td>@if ($item->rceo)
+            {{ $item->rceo }} (RCEO)
+            @endif
+            @if ($item->am)
+            , {{ $item->am }} (AM)
+            @endif
+            @if ($item->acfm)
+            , {{ $item->acfm }} (ACFM)
+            @endif
+            @if ($item->bm)
+            , {{ $item->bm }} (BM)
+            @endif
+            @if ($item->crbmcbs)
+            , {{ $item->crbmcbs }} (CRBMCBS)
+            @endif
+            @if ($item->lain)
+            , {{ $item->lain }} (Lain)
+            @endif
         </td>
         @php
             $topiks = explode((","), $item->topik);
@@ -33,13 +41,9 @@
         @endphp
         <td>
             @foreach ($topiks as $topik)
-                {{-- @php
-                    echo ($topik);
-                @endphp --}}
                 <p>{{ $topik }}</p>
             @endforeach
         </td>
-        {{-- <td>{{ $item->topik }}</td> --}}
         <td>
             @foreach ($pembahasans as $pembahasan)
                 <p>{{ $pembahasan }}</p>
