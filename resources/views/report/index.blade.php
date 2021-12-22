@@ -124,15 +124,14 @@
         }else if (rceo == "" && am == "" && acfm == "" && bm == "" && crbmcbs == "" && lainlain == ""){
             alert("Salah satu Pejabatan harus diisi");
             return false;
-        }else if (topik_count == 0){
-            alert("Topik dan Pembahasan harus diisi minimal 2");
-            return false;
         }else if (topik == "" ) {
             alert("Topik harus diisi");
             return false;
-        }
-        else if (pembahasan == "") {
+        }else if (pembahasan == "") {
             alert("Pembahasan harus diisi");
+            return false;
+        }else if (topik_count == 0){
+            alert("Topik dan Pembahasan harus diisi minimal 2");
             return false;
         }else{
             $.ajax({
