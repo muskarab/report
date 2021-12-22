@@ -116,7 +116,7 @@
             <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01">Topik</label>
                 <select class="form-select" id="topik_update{{ $i }}" name="topik_update{{ $i }}">
-                    <option value="{{ $topik }}" selected>(selected){{ $topik }}</option>
+                    <option value="{{ $topik }}" selected>{{ $topik }}</option>
                     <option value="Pemenuhan SF">Pemenuhan SF</option>
                     <option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option>
                     <option value="Proses SLA">Proses SLA</option>

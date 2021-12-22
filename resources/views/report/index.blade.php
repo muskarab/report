@@ -79,7 +79,7 @@
         $("#tampil_cair").html(cair);
         // console.log(cair);
         if (cair == "") {
-            alert("Proyeksi cair bulan ini harus diisi");
+            Swal.fire("Proyeksi cair bulan ini harus diisi");
             return false;
         }else{
             $.get("{{ url('report/create') }}", {}, function(data, status){
@@ -119,19 +119,19 @@
         console.log(topik);
         console.log(pembahasan);
         if (tempat == "") {
-            alert("Tempat harus diisi");
+            Swal.fire("Tempat harus diisi");
             return false;
         }else if (rceo == "" && am == "" && acfm == "" && bm == "" && crbmcbs == "" && lainlain == ""){
-            alert("Salah satu Pejabatan harus diisi");
+            Swal.fire("Salah satu Pejabatan harus diisi");
             return false;
         }else if (topik == "" ) {
-            alert("Topik harus diisi");
+            Swal.fire("Topik harus diisi");
             return false;
         }else if (pembahasan == "") {
-            alert("Pembahasan harus diisi");
+            Swal.fire("Pembahasan harus diisi");
             return false;
         }else if (topik_count == 0){
-            alert("Topik dan Pembahasan harus diisi minimal 2");
+            Swal.fire("Topik dan Pembahasan harus diisi minimal 2");
             return false;
         }else{
             $.ajax({
@@ -149,6 +149,11 @@
                 "&topik=" + topik +
                 "&pembahasan=" + pembahasan,
                 success:function (data) {
+                    Swal.fire(
+                        'Success!',
+                        'Your file has been saved.',
+                        'success'
+                    )
                     $(".btn-close").click();
                     read()
                 }
@@ -193,20 +198,20 @@
             console.log(topik);
             console.log(pembahasan);
             if (tempat == "") {
-            alert("Tempat harus diisi");
-            return false;
+                Swal.fire("Tempat harus diisi");
+                return false;
             }else if (rceo == "" && am == "" && acfm == "" && bm == "" && crbmcbs == "" && lainlain == ""){
-                alert("Salah satu Pejabatan harus diisi");
+                Swal.fire("Salah satu Pejabatan harus diisi");
                 return false;
             }else if (count_new_topik_update == 1){
-                alert("Topik dan Pembahasan harus diisi minimal 2");
+                Swal.fire("Topik dan Pembahasan harus diisi minimal 2");
                 return false;
             }else if (topik == "" ) {
-                alert("Topik harus diisi");
+                Swal.fire("Topik harus diisi");
                 return false;
             }
             else if (pembahasan == "") {
-                alert("Pembahasan harus diisi");
+                Swal.fire("Pembahasan harus diisi");
                 return false;
             }else{
                 $.ajax({
@@ -224,8 +229,13 @@
                     "&topik=" + topik +
                     "&pembahasan=" + pembahasan,
                     success:function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'Your file has been updated.',
+                            'success'
+                        )
                         $(".btn-close").click();
-                        read()
+                        read();
                     }
                 });
             }
@@ -245,17 +255,33 @@
 
     //Delete
     function destroy(id) {
-        $.ajax({
-            type: "get",
-            url: "{{ url('report/destroy') }}/" + id,
-            data: "id=" + id,
-            success:function (data) {
-                if (confirm('Are you sure to delete this record ?')) {
-                    $(".btn-close").click();
-                    read()
-                }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't to delete this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ url('report/destroy') }}/" + id,
+                    data: "id=" + id,
+                    success:function (data) {
+                        Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                        read();
+                    }
+                });
+                
             }
-        });
+        })
+        
     }
 
     var topik_count = 0;

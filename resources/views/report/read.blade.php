@@ -19,19 +19,19 @@
             {{ $item->rceo }} (RCEO)
             @endif
             @if ($item->am)
-            , {{ $item->am }} (AM)
+            {{ $item->am }} (AM)
             @endif
             @if ($item->acfm)
-            , {{ $item->acfm }} (ACFM)
+            {{ $item->acfm }} (ACFM)
             @endif
             @if ($item->bm)
-            , {{ $item->bm }} (BM)
+            {{ $item->bm }} (BM)
             @endif
             @if ($item->crbmcbs)
-            , {{ $item->crbmcbs }} (CRBMCBS)
+            {{ $item->crbmcbs }} (CRBMCBS)
             @endif
             @if ($item->lain)
-            , {{ $item->lain }} (Lain)
+            {{ $item->lain }} (Lain)
             @endif
         </td>
         @php
