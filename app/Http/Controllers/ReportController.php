@@ -16,24 +16,16 @@ class ReportController extends Controller
      */
     public function index()
     {
-        // $topik = [];
-        // $data = Pelaporan::join('users', 'user_id', '=', 'users.id')
-        // ->where('user_id', Auth::user()->id)
-        // ->get()->toArray();
-        // $i = 0;
-        // foreach ($data as $data) {
-        //     $topik[$i] = explode((","), $data['topik']);
-        //     $i++;
-        // }
-        // dd($topik);
-        // return $data->toArray();
-        // return $data->toJson();
         return view('report.index');
     }
 
     public function read()
     {
-        $data = Pelaporan::where('user_id', Auth::user()->id)->get();
+        if (Auth::user()->role->name == 'admin') {
+            $data =Pelaporan::get();
+        }else{
+            $data = Pelaporan::where('user_id', Auth::user()->id)->get();
+        }
         // dd($data);
         return view('report.read', compact('data'))->with('i');
     }
@@ -59,15 +51,11 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'tempat' => 'required',
-        //     'topik' => 'required',
-        //     'pembahasan' => 'required'
-        // ]);
-
         $data['cair'] = $request->cair;
         $data['tempat'] = $request->tempat;
-        $data['user_id'] = Auth::user()->id;
+        if (Auth::user()->role->name != 'admin') {
+            $data['user_id'] = Auth::user()->id;
+        }
         $data['cabang_id'] = $request->cabang;
         $data['rceo'] = $request->rceo;
         $data['am'] = $request->am;
@@ -79,10 +67,6 @@ class ReportController extends Controller
         $data['pembahasan'] = $request->pembahasan;
         $data['created_at'] = now();
         Pelaporan::insert($data);
-        // if ($validator->passes()) {
-        //     return response()->json(['success' => 'Added new records.']);
-        // }
-        // return response()->json(['error' => $validator->errors()->all()]);
     }
 
     /**

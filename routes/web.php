@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::group(['middleware' => ['cek_login:admin']], function () {
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+        Route::get('/admin', [ReportController::class, 'index'])->name('admin');
     });
     // Route::group(['middleware' => ['cek_login:korea']], function () {
         Route::get('/report', [ReportController::class, 'index'])->name('report');

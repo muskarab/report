@@ -114,7 +114,7 @@
         @foreach ($topiks as $topik)
         <div id="update_topik{{ $i }}">
             <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01">Topik</label>
+                <label class="input-group-text" for="inputGroupSelect01">Topik {{ $i + 1 }}</label>
                 <select class="form-select" id="topik_update{{ $i }}" name="topik_update{{ $i }}">
                     <option value="{{ $topik }}" selected>{{ $topik }}</option>
                     <option value="Pemenuhan SF">Pemenuhan SF</option>
@@ -136,13 +136,13 @@
                     Hapus
                 </button>
             </div>
+            <hr>
         @php
             $i++;
         @endphp
         </div>
         @endforeach
     </div>
-    <hr>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Back</button>
         <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Save</button>

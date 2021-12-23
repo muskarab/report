@@ -13,11 +13,13 @@
                         <label for="" class="col-form-label">Proyeksi cair bulan ini</label>
                     </div>
                     <div class="col-md-4">
-                        <input type="number" class="form-control" id="cair" name="cair">
+                        <input type="text" class="form-control" id="cair" name="cair">
                     </div>
+                    @if (Auth::user()->role->name != 'admin')
                     <div class="col-md-4">
                         <button class="btn btn-outline-dark" onclick="create()">Tambah</button>
                     </div>
+                    @endif
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
@@ -25,13 +27,12 @@
                     </div>
                 </div>
                 <div id="read" class="mt-3">
-                    
+                    {{-- Isi tabel --}}
                 </div>
             </div>
 
         </div>
 
-        <!-- Button trigger modal -->
         <!-- Modal -->
         <div class="modal fade" id="addreport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -43,10 +44,11 @@
             <div class="modal-body">
                 <div class="row mt-3" id="form_cair_id" hidden="true">
                     <div class="col-md-12">
-                        <label for="" class="col-form-label">Proyeksi cair bulan ini: Rp. <span id="tampil_cair"></span></label>
+                        <label for="" class="col-form-label">Proyeksi cair bulan ini: <span id="tampil_cair"></span></label>
                     </div>
                 </div>
                 <div id="page" class="p-2">
+                    {{-- isi Modal --}}
                 </div>
             </div>
             </div>
@@ -57,6 +59,31 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    var rupiah = document.getElementById('cair');
+    rupiah.addEventListener('keyup', function(e){
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        rupiah.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix){
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split   		= number_string.split(','),
+        sisa     		= split[0].length % 3,
+        rupiah     		= split[0].substr(0, sisa),
+        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+
     $(document).ready(function() {
         read()
         checkInput()
@@ -70,14 +97,24 @@
         });
     }
     
+    function toRp(angka) {
+        var rev = parseInt(angka, 10).toString().split('').reverse().join('');
+        var rev2 = '';
+        for (var i = 0; i < rev.length; i++) {
+            rev2 += rev[i];
+            if ((i + 1) % 3 === 0 && i !== (rev.length - 1)) {
+                rev2 += '.';
+            }
+        }
+        return 'Rp. ' + rev2.split('').reverse().join('') + ',00';
+    }
+
     //Create
     function create() {
         checkInput()
-         $('#form_cair_id').removeAttr("hidden");
+        $('#form_cair_id').removeAttr("hidden");
         var cair = $("#cair").val();
-        // console.log(cair);
         $("#tampil_cair").html(cair);
-        // console.log(cair);
         if (cair == "") {
             Swal.fire("Proyeksi cair bulan ini harus diisi");
             return false;
@@ -108,13 +145,8 @@
         for (let i = 0; i <= topik_count; i++) {
             topik[i] = $("#topik" + [i]).val();
             pembahasan[i] = $("#pembahasan" + [i]).val();
-            // console.log(pembahasan[i]);
-            // hasil_topik += i + '.' + topik[i] + "<br>";
-            // hasil_pembahasan += i + '.' + pembahasan[i] + "<br>";
-            // return hasilpembahasan;
         }
-        // return topik;
-        // return pembahasan;
+        console.log(cair);
         console.log(topik_count);
         console.log(topik);
         console.log(pembahasan);
@@ -178,7 +210,6 @@
     var $buka_topik = false;
     function update(id) {
         if ($buka_topik == true) {
-            // show_topik_pembahasan();
             var cair = $("#cair_modal").val();
             var tempat = $("#tempat").val();
             var cabang = $("#cabang").val();
@@ -287,7 +318,6 @@
     var topik_count = 0;
     function new_topik() {
         topik_count++;
-        // console.log(topik_count);
         var div1 = document.createElement('div');
         div1.id = topik_count;
         var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik'+topik_count+'" name="topik'+topik_count+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
@@ -308,11 +338,13 @@
         div.id = "update_topik" + count_new_topik_update;
         var topik = '<div class="input-group mb-3"><label class="input-group-text" for="inputGroupSelect01">Topik</label><select class="form-select" id="topik_update'+count_new_topik_update+'" name="topik'+count_new_topik_update+'"><option selected>Pilih Topik</option><option value="Pemenuhan SF">Pemenuhan SF</option><option value="Target dan Pipeline bulan ini">Target dan Pipeline bulan ini</option><option value="Proses SLA">Proses SLA</option><option value="Strategy">Strategy</option><option value="Root cause">Root cause</option><option value="Evaluasi Kerja">Evaluasi Kerja</option><option value="Support yang dibutuhkan">Support yang dibutuhkan</option><option value="Activity SF">Activity SF</option></select></div>';
         var pembahasan = '<div class="mb-3"><label for="exampleFormControlTextarea1" class="form-label">Hasil Pembahasan</label><textarea class="form-control" id="pembahasan_update'+count_new_topik_update+'" name="pembahasan2'+count_new_topik_update+'" rows="3"></textarea></div>'
-        var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik_update(' + count_new_topik_update +')">Hapus</button></div>';
+        var delLink = '<div><button class="btn btn-outline-danger btn-sm" type="button" onclick="delet_topik_update(' + count_new_topik_update +')">Hapus</button></div><hr>';
         div.innerHTML = topik + pembahasan + delLink;
-        document.getElementById('update_topik0').appendChild(div);
+        var count_new_topik_update_min_1 = count_new_topik_update - 1;
+        var count_new_topik_update_str = count_new_topik_update_min_1.toString();
+        console.log(count_new_topik_update_str);
+        document.getElementById('update_topik' + count_new_topik_update_str).appendChild(div);
         count_new_topik_update++;
-        // console.log(count_new_topik_update);
     }
 
     function delet_topik(id) {

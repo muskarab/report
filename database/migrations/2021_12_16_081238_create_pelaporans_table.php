@@ -17,7 +17,7 @@ class CreatePelaporansTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('cabang_id');
-            $table->integer('cair')->nullable();
+            $table->string('cair')->nullable();
             $table->string('tempat')->nullable();
             $table->string('rceo')->nullable();
             $table->string('am')->nullable();

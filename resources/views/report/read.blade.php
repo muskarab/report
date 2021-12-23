@@ -1,6 +1,9 @@
 <table class="table">
 <tr>
     <th>No</th>
+    @if (Auth::user()->role->name == 'admin')
+    <th>Nama</th>
+    @endif
     <th>Cair</th>
     <th>Tempat</th>
     <th>Cabang</th>
@@ -12,6 +15,9 @@
 @foreach ($data as $item)
     <tr>
         <td>{{ ++$i }}</td>
+        @if (Auth::user()->role->name == 'admin')
+        <td>{{ $item->user->name }}</td>
+        @endif
         <td>{{ $item->cair }}</td>
         <td>{{ $item->tempat }}</td>
         <td>{{ $item->cabang->nama }}</td>
