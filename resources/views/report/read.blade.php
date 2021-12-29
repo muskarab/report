@@ -16,7 +16,18 @@
     <tr>
         <td>{{ ++$i }}</td>
         @if (Auth::user()->role->name == 'admin')
-        <td>{{ $item->user->name }}</td>
+            @if ($item->user->role->name == 'korea')
+            <td>
+                <span class="badge bg-primary">Korea</span>
+                {{ $item->user->name }}
+            </td>
+            @endif
+            @if ($item->user->role->name == 'korwil')
+            <td>
+                <span class="badge bg-success">Korwil</span>
+                {{ $item->user->name }}
+            </td>
+            @endif
         @endif
         <td>{{ $item->cair }}</td>
         <td>{{ $item->tempat }}</td>

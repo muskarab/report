@@ -1,8 +1,8 @@
 <div class="p2">
     <div class="row">
         <div class="input-group md-6">
-            <span class="input-group-text" id="basic-addon2">Proyeksi cair bulan ini: Rp. </span>
-            <input type="number" class="form-control" placeholder="Tempat Pertemuan" aria-label="Recipient's username" aria-describedby="basic-addon2" id="cair_modal" name="cair_modal" value="{{ $data->cair }}">
+            <span class="input-group-text" id="basic-addon2">Proyeksi cair bulan ini:</span>
+            <input type="text" class="form-control" placeholder="Proyeksi cair bulan ini" aria-label="Recipient's username" aria-describedby="basic-addon2" id="cair_modal" name="cair_modal" value="{{ $data->cair }}">
         </div>
     </div>
     <div class="row mt-3">
