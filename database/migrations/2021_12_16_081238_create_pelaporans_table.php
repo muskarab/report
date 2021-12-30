@@ -27,6 +27,7 @@ class CreatePelaporansTable extends Migration
             $table->string('lain')->nullable();
             $table->longText('topik')->nullable();
             $table->longText('pembahasan')->nullable();
+            $table->string('image')->nullable();
             // $table->softDeletes();
             $table->timestamps();
         });

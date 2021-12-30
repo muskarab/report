@@ -6,6 +6,7 @@ use App\Models\Cabang;
 use App\Models\Pelaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -51,6 +52,11 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        // $request->validate([
+        //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+        
         $data['cair'] = $request->cair;
         $data['tempat'] = $request->tempat;
         if (Auth::user()->role->name != 'admin') {
@@ -65,8 +71,40 @@ class ReportController extends Controller
         $data['lain'] = $request->lainlain;
         $data['topik'] = $request->topik;
         $data['pembahasan'] = $request->pembahasan;
+        $data['image'] = $request->image;
         $data['created_at'] = now();
+        // $file = $request->image;
+        // $filename = $file->getClientOriginalName();
+        // $file->storeAs('public/image', $file);
         Pelaporan::insert($data);
+    }
+    public function store_image(Request $request)
+    {
+        // dd($request->all());
+        $file = $request->file('image');
+        $filename = $file->getClientOriginalName();
+        $file->storeAs('public/image', $filename);
+        return view('report.index');
+    }
+
+    public function update_image(Request $request)
+    {
+        // if ($file = $request->file('image_update') == null) {
+        //     return view('report.index');
+        // }else {
+        //     $file = $request->file('image_update');
+        //     $filename = $file->getClientOriginalName();
+        //     $file->storeAs('public/image', $filename);
+        //     return view('report.index');
+        // }
+        $pelaporans = Pelaporan::get();
+        $images = Storage::disk('local')->files('public/image/');
+        // foreach ($pelaporans as $pelaporan) {
+        //     if ($pelaporan->image != Storage::disk('local')->files('public/image/')) {
+        //         Storage::disk('local')->delete('public/image/' . $pelaporan->image);
+        //     }
+        // }
+        dd($images);
     }
 
     /**
@@ -114,6 +152,7 @@ class ReportController extends Controller
         $data->lain = $request->lain;
         $data->topik = $request->topik;
         $data->pembahasan = $request->pembahasan;
+        $data->image = $request->image;
         $data->save();
     }
 
@@ -126,6 +165,7 @@ class ReportController extends Controller
     public function destroy($id)
     {
         $data = Pelaporan::findOrFail($id);
+        Storage::disk('local')->delete('public/image/' . $data->image);
         $data->delete();
     }
 }

@@ -143,8 +143,25 @@
         </div>
         @endforeach
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Back</button>
-        <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Save</button>
+    <div class="col-md-6">
+        <small class="text_info form-text">
+            Gambar
+        </small>
+        <img src="{{ Storage::url('public/image/'.$data->image) }}" class="img-thumbnail">
     </div>
+    <form action="{{ route('put') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+            <div class="row mt-3">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupFile01">Update Gambar</label>
+                    <input type="file" class="form-control" id="image_update" name="image_update" onkeyup="cek_image()" value="{{ $data->image }}">
+                </div>
+            </div>
+        <hr>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
+            <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Update</button>
+        </div>
+    </form>
 </div>

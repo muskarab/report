@@ -96,18 +96,6 @@
             $("#read").html(data);
         });
     }
-    
-    function toRp(angka) {
-        var rev = parseInt(angka, 10).toString().split('').reverse().join('');
-        var rev2 = '';
-        for (var i = 0; i < rev.length; i++) {
-            rev2 += rev[i];
-            if ((i + 1) % 3 === 0 && i !== (rev.length - 1)) {
-                rev2 += '.';
-            }
-        }
-        return 'Rp. ' + rev2.split('').reverse().join('') + ',00';
-    }
 
     //Create
     function create() {
@@ -127,6 +115,13 @@
         }
     }
 
+    function cek_image() {
+        var image = document.getElementById('image');
+        if (image == false) {
+            $('#btn_simpan').removeAttr('disabled');
+        }
+    }
+
     //Store
     function store() {
         var cair = $("#cair").val();
@@ -142,14 +137,15 @@
         var topik = [];
         var hasil_topik = "";
         var hasil_pembahasan = "";
+        var image = document.getElementById('image').files[0].name;
         for (let i = 0; i <= topik_count; i++) {
             topik[i] = $("#topik" + [i]).val();
             pembahasan[i] = $("#pembahasan" + [i]).val();
         }
-        console.log(cair);
-        console.log(topik_count);
-        console.log(topik);
-        console.log(pembahasan);
+        console.log(image);
+        // console.log(topik_count);
+        // console.log(topik);
+        // console.log(pembahasan);
         if (tempat == "") {
             Swal.fire("Tempat harus diisi");
             return false;
@@ -179,7 +175,8 @@
                 "&crbmcbs=" + crbmcbs +
                 "&lainlain=" + lainlain +
                 "&topik=" + topik +
-                "&pembahasan=" + pembahasan,
+                "&pembahasan=" + pembahasan +
+                "&image=" + image,
                 success:function (data) {
                     Swal.fire(
                         'Success!',
@@ -225,7 +222,8 @@
                 topik[i] = $("#topik_update" + [i]).val();
                 pembahasan[i] = $("#pembahasan_update"+ [i]).val();
             }
-            console.log(count_new_topik_update);
+            var image = document.getElementById('image_update').files[0].name;
+            console.log(image);
             console.log(topik);
             console.log(pembahasan);
             if (tempat == "") {
@@ -258,7 +256,8 @@
                     "&crbmcbs=" + crbmcbs +
                     "&lain=" + lainlain +
                     "&topik=" + topik +
-                    "&pembahasan=" + pembahasan,
+                    "&pembahasan=" + pembahasan +
+                    "&image=" + image,
                     success:function (data) {
                         Swal.fire(
                             'Success!',
