@@ -114,13 +114,14 @@
         <div class="row mt-3">
             <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupFile01">Upload Gambar</label>
-                <input type="file" class="form-control" id="image" name="image" required onkeyup="cek_image()">
+                <input type="file" class="form-control" id="image" name="image" required onkeyup="cek_image()" accept="image/png, image/gif, image/jpeg">
             </div>
         </div>
+        <button class="btn btn-outline-primary btn_image_store"  type="submit" hidden>Simpan</button>
+    </form>
         <hr>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
-            <button class="btn btn-outline-primary" type="submit" id="btn_simpan" onclick="store()">Simpan</button>
+            <button class="btn btn-outline-primary" id="btn_simpan" onclick="store()">Simpan</button>
         </div>
-    </form>
 </div>

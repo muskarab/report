@@ -183,6 +183,7 @@
                         'Your file has been saved.',
                         'success'
                     )
+                    $(".btn_image_store").click();
                     $(".btn-close").click();
                     read()
                 }
@@ -222,7 +223,7 @@
                 topik[i] = $("#topik_update" + [i]).val();
                 pembahasan[i] = $("#pembahasan_update"+ [i]).val();
             }
-            var image = document.getElementById('image_update').files[0].name;
+            var image = document.getElementById('image').files[0].name;
             console.log(image);
             console.log(topik);
             console.log(pembahasan);
@@ -264,6 +265,7 @@
                             'Your file has been updated.',
                             'success'
                         )
+                        $(".btn_image_update").click();
                         $(".btn-close").click();
                         read();
                     }

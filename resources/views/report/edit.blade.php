@@ -149,19 +149,20 @@
         </small>
         <img src="{{ Storage::url('public/image/'.$data->image) }}" class="img-thumbnail">
     </div>
-    <form action="{{ route('put') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-            <div class="row mt-3">
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupFile01">Update Gambar</label>
-                    <input type="file" class="form-control" id="image_update" name="image_update" onkeyup="cek_image()" value="{{ $data->image }}">
-                </div>
+    <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+        <div class="row mt-3">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01">Upload Gambar</label>
+                <input type="text" value="{{ $data->image }}" id="image_old" name="image_old" hidden>
+                <input type="file" class="form-control" id="image" name="image" value="{{ $data->image }}" onkeyup="cek_image()" accept="image/png, image/gif, image/jpeg">
             </div>
-        <hr>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
-            <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Update</button>
         </div>
+        <button class="btn btn-outline-primary btn_image_update"  type="submit" hidden>Update</button>
     </form>
+    <hr>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
+        <button class="btn btn-outline-primary" onclick="update({{ $data->id }}, {{ $count_topiks }})">Update</button>
+    </div>
 </div>

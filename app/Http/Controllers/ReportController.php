@@ -81,30 +81,30 @@ class ReportController extends Controller
     public function store_image(Request $request)
     {
         // dd($request->all());
-        $file = $request->file('image');
-        $filename = $file->getClientOriginalName();
-        $file->storeAs('public/image', $filename);
+        if ($request->image != null) {
+            Storage::disk('local')->delete('public/image/' . $request->image_old);
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $file->storeAs('public/image', $filename);
+        }
         return view('report.index');
     }
 
     public function update_image(Request $request)
     {
-        // if ($file = $request->file('image_update') == null) {
-        //     return view('report.index');
-        // }else {
-        //     $file = $request->file('image_update');
-        //     $filename = $file->getClientOriginalName();
-        //     $file->storeAs('public/image', $filename);
-        //     return view('report.index');
-        // }
-        $pelaporans = Pelaporan::get();
-        $images = Storage::disk('local')->files('public/image/');
-        // foreach ($pelaporans as $pelaporan) {
-        //     if ($pelaporan->image != Storage::disk('local')->files('public/image/')) {
-        //         Storage::disk('local')->delete('public/image/' . $pelaporan->image);
-        //     }
-        // }
-        dd($images);
+        // dd($request->all());
+        if ($request->file('image_update') == null) {
+            return view('report.index');
+        }else {
+            Storage::disk('local')->delete('public/image/' . $request->img_last);
+            $file = $request->file('image_update');
+            $filename = $file->getClientOriginalName();
+            $file->storeAs('public/image', $filename);
+            return view('report.index');
+        }
+
+        // $images = Storage::disk('local')->files('public/image/');
+        // dd($images);
     }
 
     /**
