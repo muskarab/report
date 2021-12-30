@@ -87,24 +87,8 @@ class ReportController extends Controller
             $filename = $file->getClientOriginalName();
             $file->storeAs('public/image', $filename);
         }
-        return view('report.index');
-    }
-
-    public function update_image(Request $request)
-    {
-        // dd($request->all());
-        if ($request->file('image_update') == null) {
-            return view('report.index');
-        }else {
-            Storage::disk('local')->delete('public/image/' . $request->img_last);
-            $file = $request->file('image_update');
-            $filename = $file->getClientOriginalName();
-            $file->storeAs('public/image', $filename);
-            return view('report.index');
-        }
-
-        // $images = Storage::disk('local')->files('public/image/');
-        // dd($images);
+        // return view('report.index');
+        return redirect('/report');
     }
 
     /**

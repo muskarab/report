@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-striped">
 <tr>
     <th>No</th>
     @if (Auth::user()->role->name == 'admin')
@@ -10,6 +10,7 @@
     <th>Pejabat</th>
     <th>Topik</th>
     <th>Pembahasan</th>
+    <th>Gambar</th>
     <th>Action</th>
 </tr>
 @foreach ($data as $item)
@@ -67,6 +68,9 @@
             @foreach ($pembahasans as $pembahasan)
                 <p>{{ ++$k . '. ' }}{{ $pembahasan }}</p>
             @endforeach
+        </td>
+        <td>
+            <img src="{{ Storage::url('public/image/'.$item->image) }}" class="img-thumbnail">
         </td>
         <td>
             <button class="btn btn-outline-warning btn-sm" onclick="show({{ $item->id }})">

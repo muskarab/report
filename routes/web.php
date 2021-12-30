@@ -34,7 +34,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/report/create', [ReportController::class, 'create']);
         Route::get('/report/store', [ReportController::class, 'store']);
         Route::post('/report/store/image', [ReportController::class, 'store_image'])->name('store');
-        Route::put('/report/put/image', [ReportController::class, 'update_image'])->name('put');
         Route::get('/report/show/{id}', [ReportController::class, 'show']);
         Route::get('/report/update/{id}', [ReportController::class, 'update']);
         Route::get('/report/destroy/{id}', [ReportController::class, 'destroy']);

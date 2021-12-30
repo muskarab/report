@@ -26,7 +26,7 @@
                         <label for="" class="col-form-label">Daftar Aktifitas</label>
                     </div>
                 </div>
-                <div id="read" class="mt-3">
+                <div id="read" class="table-responsive mt-3">
                     {{-- Isi tabel --}}
                 </div>
             </div>
