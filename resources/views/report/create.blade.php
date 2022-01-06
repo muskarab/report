@@ -121,7 +121,7 @@
     </form>
         <hr>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="checkInput()">Kembali</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="clear_input()">Kembali</button>
             <button class="btn btn-outline-primary" id="btn_simpan" onclick="store()">Simpan</button>
         </div>
 </div>

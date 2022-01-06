@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/report/show/{id}', [ReportController::class, 'show']);
         Route::get('/report/update/{id}', [ReportController::class, 'update']);
         Route::get('/report/destroy/{id}', [ReportController::class, 'destroy']);
+        Route::post('/report/search', [ReportController::class, 'search'])->name('search');
     // });
     // Route::group(['middleware' => ['cek_login:korwil']], function () {
     //     Route::get('/korwil', [KoreaController::class, 'index'])->name('korwil');

@@ -70,7 +70,7 @@
             @endforeach
         </td>
         <td>
-            <img src="{{ Storage::url('public/image/'.$item->image) }}" class="img-thumbnail">
+            <img src="{{ Storage::url('public/image/'.$item->image) }}" class="img-fluid" width="300" height="300">
         </td>
         <td>
             <button class="btn btn-outline-warning btn-sm" onclick="show({{ $item->id }})">
@@ -89,3 +89,4 @@
     </tr>
     @endforeach
 </table>
+{!! $data->links() !!}

@@ -9,32 +9,133 @@
                 </div>
                 <h5 class="card-title text-center">Activity Report {{ Str::upper(Auth::user()->role->name)  }}</h5>
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label for="" class="col-form-label">Proyeksi cair bulan ini</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <input type="text" class="form-control" id="cair" name="cair">
                     </div>
                     @if (Auth::user()->role->name != 'admin')
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <button class="btn btn-outline-dark" onclick="create()">Tambah</button>
                     </div>
                     @endif
                 </div>
+                <form action="{{ route('search') }}" method="POST">
                 <div class="row mt-3">
-                    <div class="col-md-6">
+                    @csrf
+                    <div class="col-md-2">
                         <label for="" class="col-form-label">Daftar Aktifitas</label>
                     </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="f_search" name="f_search" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-outline-dark" onclick="">Cari</button>
+                    </div>
+                    </form>
                 </div>
+                <hr>
                 <div id="read" class="table-responsive mt-3">
-                    {{-- Isi tabel --}}
+                    <table class="table table-striped">
+                        <tr>
+                            <th>No</th>
+                            @if (Auth::user()->role->name == 'admin')
+                            <th>Nama</th>
+                            @endif
+                            <th>Cair</th>
+                            <th>Tempat</th>
+                            <th>Cabang</th>
+                            <th>Pejabat</th>
+                            <th>Topik</th>
+                            <th>Pembahasan</th>
+                            <th>Gambar</th>
+                            <th>Action</th>
+                        </tr>
+                        @foreach ($data as $item)
+                        <tr>
+                            <td>{{ ++$i }}</td>
+                            @if (Auth::user()->role->name == 'admin')
+                                @if ($item->user->role->name == 'korea')
+                                <td>
+                                    <span class="badge bg-primary">Korea</span>
+                                    {{ $item->user->name }}
+                                </td>
+                                @endif
+                                @if ($item->user->role->name == 'korwil')
+                                <td>
+                                    <span class="badge bg-success">Korwil</span>
+                                    {{ $item->user->name }}
+                                </td>
+                                @endif
+                            @endif
+                            <td>{{ $item->cair }}</td>
+                            <td>{{ $item->tempat }}</td>
+                            <td>{{ $item->cabang->nama }}</td>
+                            <td>@if ($item->rceo)
+                                {{ $item->rceo }} (RCEO)
+                                @endif
+                                @if ($item->am)
+                                {{ $item->am }} (AM)
+                                @endif
+                                @if ($item->acfm)
+                                {{ $item->acfm }} (ACFM)
+                                @endif
+                                @if ($item->bm)
+                                {{ $item->bm }} (BM)
+                                @endif
+                                @if ($item->crbmcbs)
+                                {{ $item->crbmcbs }} (CRBMCBS)
+                                @endif
+                                @if ($item->lain)
+                                {{ $item->lain }} (Lain)
+                                @endif
+                            </td>
+                            @php
+                                $topiks = explode((","), $item->topik);
+                                $pembahasans = explode((","), $item->pembahasan);
+                                // print_r($pembahasans);
+                                $j = 0;
+                                $k = 0;
+                            @endphp
+                            <td>
+                                @foreach ($topiks as $topik)
+                                    <p>{{ ++$j . '. ' }}{{ $topik }}</p>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($pembahasans as $pembahasan)
+                                    <p>{{ ++$k . '. ' }}{{ $pembahasan }}</p>
+                                @endforeach
+                            </td>
+                            <td>
+                                <img src="{{ Storage::url('public/image/'.$item->image) }}" class="img-fluid" width="300" height="300">
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-warning btn-sm" onclick="show({{ $item->id }})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                </button>
+                                <p></p>
+                                <button class="btn btn-outline-danger btn-sm" onclick="destroy({{ $item->id }})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
+                    {!! $data->links() !!}
                 </div>
             </div>
 
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="addreport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addreport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
             <div class="modal-header">
@@ -89,11 +190,16 @@
         checkInput()
     });
     
+    function clear_input() {
+        document.getElementById("cair").value = "";
+        document.getElementById("f_search").value = "";
+    }
+    
     //Read
     function read() {
         document.getElementById("cair").value = "";
-        $.get("{{ url('report/read') }}", {}, function(data, status){
-            $("#read").html(data);
+        $.get("{{ url('report/') }}", {}, function(data, status){
+            // $("#read").html(data);
         });
     }
 
@@ -267,7 +373,7 @@
                         )
                         $(".btn_image_update").click();
                         $(".btn-close").click();
-                        read();
+                        read(); 
                     }
                 });
             }
@@ -308,12 +414,12 @@
                         'success'
                         )
                         read();
+                        location.reload(); 
                     }
                 });
                 
             }
         })
-        
     }
 
     var topik_count = 0;

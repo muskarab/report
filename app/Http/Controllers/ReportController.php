@@ -17,15 +17,56 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('report.index');
+        if (Auth::user()->role->name == 'admin') {
+            $data =Pelaporan::paginate(5);
+        }else{
+            $data = Pelaporan::where('user_id', Auth::user()->id)->paginate(5);
+        }
+        // dd($data);
+        // return view('report.read', compact('data'))->with('i');
+        return view('report.index', compact('data'))->with('i');
+    }
+
+    public function search(Request $request)
+    {
+        if (Auth::user()->role->name == 'admin') {
+            $data = Pelaporan::join('users', 'pelaporans.user_id', '=', 'users.id')
+            ->where('users.name', 'LIKE', '%' . $request->f_search . '%')
+            ->orwhere('cair', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('tempat', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('rceo', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('am', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('acfm', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('bm', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('crbmcbs', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('lain', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('topik', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('pembahasan', 'LIKE', '%' . $request->f_search . '%')
+            ->paginate();
+            return view('report.index', compact('data'))->with('i');
+        }else {
+            $data = Pelaporan::Where('user_id', Auth::user()->id)
+            // ->Where('tempat', 'LIKE', '%' . $request->f_search . '%')
+            ->Where('rceo', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('am', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('acfm', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('bm', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('crbmcbs', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('lain', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('topik', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('pembahasan', 'LIKE', '%' . $request->f_search . '%')
+            ->paginate();
+            return view('report.index', compact('data'))->with('i');
+        }
+        // dd($request->all());
     }
 
     public function read()
     {
         if (Auth::user()->role->name == 'admin') {
-            $data =Pelaporan::get();
+            $data =Pelaporan::paginate(1);
         }else{
-            $data = Pelaporan::where('user_id', Auth::user()->id)->get();
+            $data = Pelaporan::where('user_id', Auth::user()->id)->paginate(1);
         }
         // dd($data);
         return view('report.read', compact('data'))->with('i');
@@ -151,5 +192,7 @@ class ReportController extends Controller
         $data = Pelaporan::findOrFail($id);
         Storage::disk('local')->delete('public/image/' . $data->image);
         $data->delete();
+        // return view('report.index', compact('data'))->with('i');
+        return redirect('/report');
     }
 }
