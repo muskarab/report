@@ -46,8 +46,8 @@ class ReportController extends Controller
             return view('report.index', compact('data'))->with('i');
         }else {
             $data = Pelaporan::Where('user_id', Auth::user()->id)
-            // ->Where('tempat', 'LIKE', '%' . $request->f_search . '%')
-            ->Where('rceo', 'LIKE', '%' . $request->f_search . '%')
+            ->Where('tempat', 'LIKE', '%' . $request->f_search . '%')
+            ->orWhere('rceo', 'LIKE', '%' . $request->f_search . '%')
             ->orWhere('am', 'LIKE', '%' . $request->f_search . '%')
             ->orWhere('acfm', 'LIKE', '%' . $request->f_search . '%')
             ->orWhere('bm', 'LIKE', '%' . $request->f_search . '%')
